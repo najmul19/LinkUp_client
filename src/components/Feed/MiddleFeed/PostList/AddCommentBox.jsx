@@ -14,11 +14,16 @@ const AddCommentBox = ({
   const [comment, setComment] = useState("");
   const BACKEND_URL = "http://localhost:5000";
 
-  useEffect(() => {
-    if (replyingTo && replyUsername) {
+ useEffect(() => {
+  if (replyingTo && replyUsername) {
+    const timer = setTimeout(() => {
       setComment(`@${replyUsername} `);
-    }
-  }, [replyingTo, replyUsername]);
+    }, 0);
+
+    return () => clearTimeout(timer);
+  }
+}, [replyingTo, replyUsername]);
+
 
   const handleCommentSubmit = async () => {
     if (!comment.trim()) return;
@@ -68,7 +73,7 @@ const AddCommentBox = ({
 
       <button
         onClick={handleCommentSubmit}
-        className="text-blue-500 font-semibold text-sm"
+        className="cursor-pointer text-blue-500 font-semibold text-sm"
       >
         Post
       </button>

@@ -103,7 +103,7 @@ const CommentList = ({
             <div className="flex items-center gap-4 mt-2 text-xs text-gray-600">
               <button
                 onClick={() => handleLike(comment._id)}
-                className={`font-medium ${
+                className={`cursor-pointer font-medium ${
                   comment.likes?.includes(user._id) ? "text-blue-500" : ""
                 }`}
               >
@@ -115,7 +115,7 @@ const CommentList = ({
                   setReplyingTo(comment._id);
                   setReplyUsername(comment.userName);
                 }}
-                className="font-medium"
+                className="cursor-pointer  font-medium"
               >
                 Reply
               </button>
@@ -149,7 +149,7 @@ const CommentList = ({
         <>
           {commentTree.slice(0, visibleCount).map((c) => renderComment(c))}
 
-          {/* View more button */}
+   
           {visibleCount < commentTree.length && (
             <button
               onClick={() => setVisibleCount((v) => v + 5)}

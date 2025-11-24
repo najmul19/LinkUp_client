@@ -6,6 +6,7 @@ const CreatePostBox = ({ user, posts, setPosts }) => {
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
+  const [privacy, setPrivacy] = useState("public"); // <-- new state
   const BACKEND_URL = "http://localhost:5000";
 
   const handleImageChange = (e) => {
@@ -30,13 +31,14 @@ const CreatePostBox = ({ user, posts, setPosts }) => {
     try {
       const res = await axios.post(
         `${BACKEND_URL}/api/posts`,
-        { content, imageBase64 },
+        { content, imageBase64, privacy }, // <-- send privacy
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
       setPosts([res.data, ...posts]);
       setContent("");
       setImage(null);
       setPreview(null);
+      setPrivacy("public"); // reset to default
     } catch (err) {
       console.error(err);
       alert("Failed to post");
@@ -55,13 +57,31 @@ const CreatePostBox = ({ user, posts, setPosts }) => {
           className="flex-1 bg-gray-100 px-4 py-2 rounded-full focus:outline-blue-500"
         />
       </div>
+
       {preview && <img src={preview} className="rounded-xl mt-3 max-h-60 object-cover" />}
+
+      {/* Privacy option */}
+      <div className="mt-2">
+        <label className="mr-2 text-sm font-medium">Privacy:</label>
+        <select
+          value={privacy}
+          onChange={(e) => setPrivacy(e.target.value)}
+          className="border border-gray-300 rounded px-2 py-1 text-sm"
+        >
+          <option value="public">Public</option>
+          <option value="private">Private</option>
+        </select>
+      </div>
+
       <div className="flex items-center justify-between mt-4">
         <label className="text-gray-600 text-sm hover:text-blue-500 cursor-pointer">
           Photo
           <input type="file" className="hidden" onChange={handleImageChange} />
         </label>
-        <button onClick={handleCreatePost} className="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-lg">
+        <button
+          onClick={handleCreatePost}
+          className="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-lg"
+        >
           Post
         </button>
       </div>

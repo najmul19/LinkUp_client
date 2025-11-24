@@ -3,6 +3,7 @@ import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
 import profile from "../../../assets/images/profile.png"
+import log from "../../../assets/images/logo.svg"
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeNav, setActiveNav] = useState("home");
@@ -16,7 +17,7 @@ const Navbar = () => {
         <div className="flex items-center">
           <a href="/feed" className="flex items-center">
             <img
-              src="/assets/images/logo.svg"
+              src={log}
               alt="Buddy Script"
               className="h-8 w-auto"
             />

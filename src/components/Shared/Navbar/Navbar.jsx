@@ -1,26 +1,30 @@
 // components/Shared/Navbar/Navbar.jsx
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
-import profile from "../../../assets/images/profile.png"
-import log from "../../../assets/images/logo.svg"
+import profile from "../../../assets/images/profile.png";
+import log from "../../../assets/images/logo.svg";
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeNav, setActiveNav] = useState("home");
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const navigate = useNavigate();
+  const { user, logoutUser } = useContext(AuthContext);
 
-  const { user } = useContext(AuthContext);
+  const handleLogout = () => {
+    setDropdownOpen(false);
+
+    navigate("/login");
+    logoutUser().catch(console.error);
+  };
+
   return (
     <nav className="bg-white border-b border-gray-200 px-4 py-3">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center">
-          <a href="/feed" className="flex items-center">
-            <img
-              src={log}
-              alt="Buddy Script"
-              className="h-8 w-auto"
-            />
+          <a href="/root/feed" className="flex items-center">
+            <img src={log} alt="Buddy Script" className="h-8 w-auto" />
           </a>
         </div>
 
@@ -57,7 +61,7 @@ const Navbar = () => {
         <div className="flex items-center space-x-6">
           {/* Home Icon */}
           <NavIcon
-            href="/feed"
+            href="/root/feed"
             isActive={activeNav === "home"}
             onClick={() => setActiveNav("home")}
             icon={
@@ -93,7 +97,8 @@ const Navbar = () => {
 
           {/* Friends Icon */}
           <NavIcon
-            href="/friend-request"
+            // href="/friend-request"
+            href="#"
             isActive={activeNav === "friends"}
             onClick={() => setActiveNav("friends")}
             icon={
@@ -146,7 +151,8 @@ const Navbar = () => {
 
           {/* Chat Icon */}
           <NavIcon
-            href="/chat"
+            // href="/chat"
+            href="#"
             isActive={activeNav === "chat"}
             onClick={() => setActiveNav("chat")}
             icon={
@@ -174,21 +180,18 @@ const Navbar = () => {
           />
         </div>
 
-
         {/* Profile Section */}
         <div className="relative ml-6">
           <div
             className="flex items-center space-x-2 cursor-pointer"
             onClick={() => setDropdownOpen(!dropdownOpen)}
           >
-            <img
-              src={profile}
-              alt="Profile"
-              className="w-8 h-8 rounded-full"
-            />
-            <span className="text-sm font-medium text-gray-700">
-              {user.firstname} {user.lastname}
-            </span>
+            <img src={profile} alt="Profile" className="w-8 h-8 rounded-full" />
+            {user && (
+              <span className="text-sm font-medium text-gray-700">
+                {user.firstname} {user.lastname}
+              </span>
+            )}
             <svg
               className={`w-3 h-3 transform transition-transform ${
                 dropdownOpen ? "rotate-180" : ""
@@ -207,24 +210,31 @@ const Navbar = () => {
           {/* Dropdown Menu */}
           {dropdownOpen && (
             <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-lg z-50">
-              <Link
-                to="/auth/login"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              >
-                Login
-              </Link>
-              <Link
-                to="/auth/register"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              >
-                Register
-              </Link>
-              <a
-                href="/logout"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              >
-                Logout
-              </a>
+              {user ? (
+                <>
+                  <button
+                    onClick={handleLogout}
+                    className="cursor-pointer block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to="/login"
+                    className="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Register
+                  </Link>
+                </>
+              )}
             </div>
           )}
         </div>

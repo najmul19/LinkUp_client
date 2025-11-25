@@ -16,39 +16,15 @@ export default function RegisterPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  //   const handleRegister = async (e) => {
-  //     e.preventDefault();
-  //     setError("");
-  //     setLoading(true);
-
-  //     try {
-  //       // 1️⃣ Create user
-  //       const result = await createUser(email, password);
-
-  //       // 2️⃣ Update profile with full name
-  //       await updateUserProfile(`${firstName} ${lastName}`);
-
-  //       // 3️⃣ Redirect to login or feed
-  //       //   router.push("/auth/login");
-  //       navigate("/auth/login");
-  //     } catch (err) {
-  //       console.error(err);
-  //       setError(err.message);
-  //     }
-
-  //     setLoading(false);
-  //   };
   const handleRegister = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
     try {
-      // Call backend register API with firstname & lastname
       await createUser(email, password, firstName, lastName);
 
-      // Redirect to login page
-      navigate("/auth/login");
+      navigate("/login");
     } catch (err) {
       console.error(err);
       setError(err.response?.data?.message || err.message);
@@ -137,7 +113,7 @@ export default function RegisterPage() {
 
         <p className="text-center text-sm text-gray-600 mt-4">
           Already have an account?{" "}
-          <a href="/auth/login" className="text-blue-600 font-semibold">
+          <a href="/login" className="text-blue-600 font-semibold">
             Login
           </a>
         </p>

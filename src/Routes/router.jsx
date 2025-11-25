@@ -4,25 +4,31 @@ import FeedPage from "../components/Feed/Feed";
 import AuthLayout from "../Layouts/AuthLayout";
 import LoginPage from "../components/Auth/Login";
 import RegisterPage from "../components/Auth/Register";
+import PrivateRout from "./PrivateRoute";
 
 export const router = createBrowserRouter([
   {
-    path: '/',
-    element: <RootLayouts />,
+    path: "/",
+    element: <AuthLayout />,
     children: [
       {
         index: true,
-        element: <FeedPage />,
+        element: <LoginPage />,
       },
-      // ... other routes
+      { path: "login", element: <LoginPage /> },
+      { path: "register", element: <RegisterPage /> },
     ],
   },
   {
-    path: "/auth",
-    element: <AuthLayout />,
+    path: "/root",
+    element: (
+      <PrivateRout>
+        <RootLayouts />
+      </PrivateRout>
+    ),
     children: [
-      { path: "login", element: <LoginPage /> },
-      { path: "register", element: <RegisterPage /> },
+      { path: "feed", element: <FeedPage /> },
+      
     ],
   },
 ]);

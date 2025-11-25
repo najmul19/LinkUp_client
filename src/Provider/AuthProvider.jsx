@@ -81,7 +81,7 @@
 // export default AuthProvide;
 import React, { useState } from "react";
 import axios from "axios";
-import { AuthContext } from "../context/AuthContext"; 
+import { AuthContext } from "../context/AuthContext";
 
 const BACKEND_URL = "http://localhost:5000";
 
@@ -131,10 +131,11 @@ const AuthProvide = ({ children }) => {
     }
   };
 
-  // LOGOUT
+  // Logout
   const logoutUser = () => {
     localStorage.removeItem("user");
     setUser(null);
+    window.location.href = "/login";
   };
 
   const authInfo = {

@@ -144,7 +144,7 @@ export default function LoginPage() {
       await loginUser(email, password);
 
       // Redirect to main feed
-      navigate("/");
+      navigate("/root/feed");
     } catch (err) {
       console.error(err);
       setError(err.response?.data?.message || err.message);
@@ -203,7 +203,7 @@ export default function LoginPage() {
 
         <p className="text-center text-sm text-gray-600 mt-4">
           Don’t have an account?{" "}
-          <a href="/auth/register" className="text-blue-600 font-semibold">
+          <a href="/register" className="text-blue-600 font-semibold">
             Create one
           </a>
         </p>
